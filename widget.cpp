@@ -1,6 +1,7 @@
 #include <QCloseEvent>
 #include "widget.h"
 #include "config.h"
+#include "aboutdialog.h"
 #include "ui_widget.h"
 #include <QFileDialog>
 #include <QListWidget>
@@ -179,13 +180,14 @@ void Widget::on_FilePath_clicked()
 void Widget::initMenu()
 {
     QMenuBar *menuBar = new QMenuBar();
-    QMenu *about = new QMenu(tr("&About"), this);
     QMenu *settings = new QMenu(tr("&Settings"), this);
-    about->addSeparator();
-    menuBar->addMenu(about);
+    QMenu *help = new QMenu(tr("&Help"), this);
+    help->addSeparator();
     menuBar->addMenu(settings);
+    menuBar->addMenu(help);
 
-    about->setStyleSheet("QMenu::item:selected {background-color: rgb(51, 153, 255);}");
+
+    help->setStyleSheet("QMenu::item:selected {background-color: rgb(51, 153, 255);}");
     settings->setStyleSheet("QMenu::item:selected {background-color: rgb(51, 153, 255);}");
 
     startWithWindowsAction = settings->addAction("Start with Windows");
@@ -195,16 +197,16 @@ void Widget::initMenu()
     initAutostart();
     initContextMenu();
 
-    about->addAction("Version");
-    about->addAction("Check for Update");
-    about->addAction("Donate");
-    about->addAction("Help");
-    about->addAction("Submit Feedback");
+    help->addAction("Version");
+    help->addAction("Check for Update");
+    help->addAction("Donate");
+    aboutAction = help->addAction("About");
+    help->addAction("Submit Feedback");
 
     this->layout()->setMenuBar(menuBar);
     connect(startWithWindowsAction, SIGNAL(toggled(bool)), this, SLOT(setStartWithWindows(bool)));
     connect(addToContextMenuAction, SIGNAL(toggled(bool)), this, SLOT(addToContextMenu(bool)));
-
+    connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(on_aboutAction()));
 
 }
 
@@ -320,4 +322,10 @@ void Widget::on_blockButton_clicked()
             prog->block();
         }
     }
+}
+
+void Widget::on_aboutAction()
+{
+    AboutDialog aboutDialog;
+    aboutDialog.exec();
 }

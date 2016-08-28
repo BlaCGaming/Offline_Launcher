@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include "programs.h"
 
+
 namespace Ui {
 class Widget;
 }
@@ -40,6 +41,8 @@ protected:
       QAction * startWithWindowsAction;
       QAction * addToContextMenuAction;
 
+      QAction * aboutAction;
+
       void initAutostart();
       void initContextMenu();
 
@@ -56,6 +59,8 @@ private slots:
     void on_unblockButton_clicked();
 
     void on_blockButton_clicked();
+
+    void on_aboutAction();
 
 private:
     Ui::Widget *ui;
